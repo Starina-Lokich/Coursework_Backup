@@ -27,3 +27,26 @@ class VkUser:
        response = requests.get(f'{self.API_BASE_URL}photos.get', params=params).json()
        return response
     
+    def photo_url(self):
+        '''
+        Функция возвращает словарь с информацией по фотографиям,
+        а также url  фотографии максимального размера
+        '''
+
+        photos_urls = []
+        photos = self.photos_info()['response']['items']
+        for photo in photos:
+            target_photo = None
+            TYPES = 'smxopqryzw'
+            for photo_size in photo['sizes']:
+                if not target_photo or TYPES.find(photo_size['type']) > TYPES.find(
+                        target_photo['type']): target_photo = photo_size
+            photos_urls.append({'url': target_photo['url'],
+                               'type': target_photo["type"],
+                               'width': target_photo["width"],
+                               'height': target_photo["height"],
+                               'likes': photo['likes']['count'],
+                               })
+        sorted_photo_list = sorted(photos_urls, key=lambda x: x['height'])
+        return sorted_photo_list
+    
