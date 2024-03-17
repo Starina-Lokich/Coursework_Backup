@@ -13,4 +13,15 @@ class YandexDisk:
             'Content-Type': 'application/json',
             "Authorization": yandex_token
         }
-    
+        
+    def creat_folder(self, name_folder):
+        '''
+        Функция создает папку на YandexDisk
+        '''
+
+        self.params = {
+            "path" : name_folder
+        }
+        self.response = requests.put(self.url + "resources", 
+                                    headers = self.headers, 
+                                    params = self.params)
