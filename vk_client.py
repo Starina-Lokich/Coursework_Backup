@@ -14,4 +14,16 @@ class VkUser:
             "access_token": self.token,
             "v": 5.199
         }
+
+    def photos_info(self, count = 5):
+       '''
+        Функция возвращает словарь 
+        с информацией по фотографии(ям) из профиля пользователя
+       '''
+
+       params = self._get_common_params()
+       params.update({"user_id": self.user_id, "album_id": "profile", 
+                      "extended": 1, "photo_sizes": 1, "count": count})
+       response = requests.get(f'{self.API_BASE_URL}photos.get', params=params).json()
+       return response
     
