@@ -50,3 +50,13 @@ class VkUser:
         sorted_photo_list = sorted(photos_urls, key=lambda x: x['height'])
         return sorted_photo_list
     
+    def like_count(self, photo_id):
+        '''
+        Функция возвращает словарь с колическтвом лайков 
+        и id пользователей, которые их поставили
+        '''
+
+        params = self._get_common_params()
+        params.update({"type": 'photo', "owner_id": self.user_id, "item_id": photo_id})
+        response = requests.get(f'{self.API_BASE_URL}likes.getList', params=params).json()
+        return response
